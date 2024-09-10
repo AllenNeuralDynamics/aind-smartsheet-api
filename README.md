@@ -7,14 +7,39 @@
 ![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen?logo=codecov)
 ![Python](https://img.shields.io/badge/python->=3.7-blue?logo=python)
 
+Small wrapper around smartsheet-python-sdk to help parsing into pydantic models
 
+## Basic Usage Example
+```python
+from aind_smartsheet_api.client import SmartsheetClient, SmartsheetSettings
+settings = SmartsheetSettings(access_token="*****")
+client = SmartsheetClient(smartsheet_settings=settings)
+# get a basic response
+basic_response = client.get_parsed_sheet(sheet_id="<int value of sheet id requesting>")
+```
 
-## Usage
- - To use this template, click the green `Use this template` button and `Create new repository`.
- - After github initially creates the new repository, please wait an extra minute for the initialization scripts to finish organizing the repo.
- - To enable the automatic semantic version increments: in the repository go to `Settings` and `Collaborators and teams`. Click the green `Add people` button. Add `svc-aindscicomp` as an admin. Modify the file in `.github/workflows/tag_and_publish.yml` and remove the if statement in line 65. The semantic version will now be incremented every time a code is committed into the main branch.
- - To publish to PyPI, enable semantic versioning and uncomment the publish block in `.github/workflows/tag_and_publish.yml`. The code will now be published to PyPI every time the code is committed into the main branch.
- - The `.github/workflows/test_and_lint.yml` file will run automated tests and style checks every time a Pull Request is opened. If the checks are undesired, the `test_and_lint.yml` can be deleted. The strictness of the code coverage level, etc., can be modified by altering the configurations in the `pyproject.toml` file and the `.flake8` file.
+Parsing into pydantic model
+```python
+from aind_smartsheet_api.client import SmartsheetClient, SmartsheetSettings
+from pydantic import BaseModel, Field, ConfigDict
+from typing import Optional
+
+class MyModel(BaseModel):
+    project_name: Optional[str] = Field(None, alias="Project Name")
+    project_code: str = Field(..., alias="Project Code")
+    funding_institution: str = Field(..., alias="Funding Institution")
+    grant_number: Optional[str] = Field(None, alias="Grant Number")
+    investigators: str = Field(..., alias="Investigators")
+    model_config = ConfigDict(populate_by_name=True)
+
+settings = SmartsheetSettings(access_token="*****")
+client = SmartsheetClient(smartsheet_settings=settings)
+# get a response parsed into MyModel
+model_response = client.get_parsed_sheet_model(
+  sheet_id="<int value of sheet id requesting>", model=MyModel
+)
+```
+
 
 ## Installation
 To use the software, in the root directory, run
