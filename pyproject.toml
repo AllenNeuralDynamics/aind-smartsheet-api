@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "aind-smartsheet-api"
-description = "Generated from aind-library-template"
+description = "Helps to convert Smartsheet json into Pydantic models"
 license = {text = "MIT"}
 requires-python = ">=3.8"
 authors = [

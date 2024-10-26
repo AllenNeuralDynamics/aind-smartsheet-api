@@ -4,8 +4,8 @@ methods to retrieve data."""
 from functools import lru_cache
 from typing import Any, Dict, List, Optional, Type, TypeVar
 
-from pydantic import BaseModel, Extra, Field, SecretStr, ValidationError
-from pydantic_settings import BaseSettings
+from pydantic import BaseModel, Field, SecretStr, ValidationError
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from smartsheet import Smartsheet
 
 from aind_smartsheet_api.models import SheetFields, SheetRow
@@ -30,12 +30,7 @@ class SmartsheetSettings(BaseSettings):
     max_connections: int = Field(
         default=8, description="Maximum connection pool size."
     )
-
-    class Config:
-        """Set env prefix and forbid extra fields."""
-
-        env_prefix = "SMARTSHEET_"
-        extra = Extra.forbid
+    model_config = SettingsConfigDict(env_prefix="SMARTSHEET_", extra="forbid")
 
 
 class SmartsheetClient:
