@@ -30,6 +30,9 @@ class SmartsheetSettings(BaseSettings):
     max_connections: int = Field(
         default=8, description="Maximum connection pool size."
     )
+    sheet_id_map: Optional[Dict[str, int]] = Field(
+        default=None, description="Optional dictionary to store sheet ids."
+    )
     model_config = SettingsConfigDict(env_prefix="SMARTSHEET_", extra="forbid")
 
 

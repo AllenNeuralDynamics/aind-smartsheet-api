@@ -34,6 +34,20 @@ class TestSmartsheetSettings(unittest.TestCase):
         )
         self.assertEqual("secret_agent", smart_sheet_settings.user_agent)
 
+    def test_optional_sheet_id_map(self):
+        """Tests optional sheet_id_map."""
+        smart_sheet_settings = SmartsheetSettings(
+            access_token="abc-123",
+            sheet_id_map={"sheet_1": 1234, "sheet_2": 5678},
+        )
+        self.assertEqual(
+            "abc-123", smart_sheet_settings.access_token.get_secret_value()
+        )
+        self.assertEqual(
+            {"sheet_1": 1234, "sheet_2": 5678},
+            smart_sheet_settings.sheet_id_map,
+        )
+
 
 class TestSmartsheetClient(unittest.TestCase):
     """Tests methods in SmartsheetClient class"""
